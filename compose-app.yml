@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  app:
+    container_name: workout-server
+    volumes:
+      - ./src:/src
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        APP_NAME: workout-server
+    ports:
+      - 3010:3010
+    command: yarn nest start --watch workout-server
+    links:
+      - postgres-db
+  postgres-db:
+    ports:
+      - '5432:5432'
+    image: postgres:14.5
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
